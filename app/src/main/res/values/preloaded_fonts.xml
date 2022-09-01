@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/bangers</item>
+        <item>@font/beth_ellen</item>
+        <item>@font/charmonman_bold</item>
+        <item>@font/damion</item>
+        <item>@font/dancing_script</item>
+        <item>@font/kalam_bold</item>
+        <item>@font/kaushan_script</item>
+        <item>@font/lemon</item>
+        <item>@font/marck_script</item>
+        <item>@font/merienda_bold</item>
+        <item>@font/sriracha</item>
+        <item>@font/trade_winds</item>
+    </array>
+</resources>

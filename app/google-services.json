@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "859839447357",
+    "firebase_url": "https://traverse-f291c-default-rtdb.firebaseio.com",
+    "project_id": "traverse-f291c",
+    "storage_bucket": "traverse-f291c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859839447357:android:c993360af00ae89d168554",
+        "android_client_info": {
+          "package_name": "com.example.traverse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859839447357-379iioc6tp146n865kvq4jg7s8te0v6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtbsHoFQeOqg-rBmBRBoTm9LeZ7QDQwbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859839447357-379iioc6tp146n865kvq4jg7s8te0v6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
