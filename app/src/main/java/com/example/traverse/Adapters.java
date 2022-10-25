@@ -9,9 +9,47 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.MyViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+
+class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCity;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtCity = itemView.findViewById(R.id.city_result);
+        }
+    }
+
+    private List<DocumentSnapshot> locationDocuments;
+
+    public LocationAdapter(List<DocumentSnapshot> locationDocumentSnapshots) {
+        this.locationDocuments = locationDocumentSnapshots;
+    }
+
+    @NonNull
+    @Override
+    public LocationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent,false);
+        return new LocationAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, int position) {
+        Location location = locationDocuments.get(position).toObject(Location.class);
+        holder.txtCity.setText(location.getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return locationDocuments.size();
+    }
+}
+
+class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<Result> resultArrayList;
