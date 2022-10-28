@@ -68,7 +68,7 @@
                 app:layout_constraintVertical_bias="0.13" />
 
             <AutoCompleteTextView
-                android:id="@+id/searchText"
+                android:id="@+id/searchCity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_baseline_search_24"

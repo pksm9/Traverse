@@ -1,20 +1,21 @@
 package com.example.traverse;
 
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.EditText;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.util.Log;
-
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class CitySearchActivity extends AppCompatActivity {
     ArrayList<Result> resultArrayList;
     ResultsAdapter resultsAdapter;
     ProgressDialog progressDialog;
+    EditText searchCity;
+
+    private static final String TAG = "FirestoreSearch";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,28 @@ public class CitySearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(CitySearchActivity.this));
         this.repopulateRecyclerView();
 
-        //EventChangeListener();
+        searchCity = findViewById(R.id.searchCity);
+        this.changeOnSearch();
+
+
+    }
+
+    private void changeOnSearch() {
+        searchCity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d(TAG,"Search box changed to : " + s.toString());
+
+            }
+        });
     }
 
     private void repopulateRecyclerView() {
@@ -52,10 +77,12 @@ public class CitySearchActivity extends AppCompatActivity {
             .addOnSuccessListener(querySnapshot -> {
                 LocationAdapter adapter = new LocationAdapter(querySnapshot.getDocuments());
                 recyclerView.setAdapter(adapter);
+                /*if (progressDialog.isShowing())
+                    progressDialog.dismiss();*/
             });
     }
 
-    public void EventChangeListener() {
+   public void EventChangeListener() {
         db.collection("locations")
             .addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -71,8 +98,7 @@ public class CitySearchActivity extends AppCompatActivity {
                             resultArrayList .add(dc.getDocument().toObject(Result.class));
                         }
                         resultsAdapter.notifyDataSetChanged();
-                       /* if (progressDialog.isShowing()){
-                            progressDialog.dismiss();}*/
+
                     }
                 }
             });

@@ -49,6 +49,7 @@ class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> 
     }
 }
 
+
 class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.MyViewHolder> {
 
     Context context;
