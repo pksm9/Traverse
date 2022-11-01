@@ -1,28 +1,16 @@
 package com.example.traverse;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class CityDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "Tag";
-    TextView location, province;
+    TextView city, province;
 
     FirebaseFirestore db;
 
@@ -33,17 +21,19 @@ public class CityDetailsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        location = findViewById(R.id.location);
+        city = findViewById(R.id.city);
         province = findViewById(R.id.province);
 
-        DocumentReference documentReference = db.collection("locations").document("wgedi");
+        city.setText(getIntent().getStringExtra("city"));
+
+        /*DocumentReference documentReference = db.collection("locations").document("wgedi");
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                location.setText(value.getString("district"));
+                city.setText(value.getString("district"));
                 province.setText(value.getString("province"));
             }
-        });
+        });*/
 
 
 

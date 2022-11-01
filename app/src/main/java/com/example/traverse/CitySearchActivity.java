@@ -38,18 +38,22 @@ public class CitySearchActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        /*ProgressDialog progressDialog = new ProgressDialog(this);
-        //ProgressDialog.setCancelable(false);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Fetching Data....");
-        progressDialog.show();*/
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
 
         recyclerView = findViewById(R.id.city_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CitySearchActivity.this));
+        //recyclerView.setNestedScrollingEnabled(false);
         this.repopulateRecyclerView();
 
         searchCity = findViewById(R.id.searchCity);
         this.changeOnSearch();
+
 
 
     }
@@ -77,8 +81,7 @@ public class CitySearchActivity extends AppCompatActivity {
             .addOnSuccessListener(querySnapshot -> {
                 LocationAdapter adapter = new LocationAdapter(querySnapshot.getDocuments());
                 recyclerView.setAdapter(adapter);
-                /*if (progressDialog.isShowing())
-                    progressDialog.dismiss();*/
+                    progressDialog.dismiss();
             });
     }
 
