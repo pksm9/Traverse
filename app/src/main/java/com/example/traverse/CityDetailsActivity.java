@@ -1,6 +1,7 @@
 package com.example.traverse;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +25,9 @@ public class CityDetailsActivity extends AppCompatActivity {
         city = findViewById(R.id.city);
         province = findViewById(R.id.province);
 
-        city.setText(getIntent().getStringExtra("city"));
+        Location location = (Location) getIntent().getExtras().getSerializable("location");
+        Log.d("Traverse", location.getName());
+//        city.setText(getIntent().get("city"));
 
         /*DocumentReference documentReference = db.collection("locations").document("wgedi");
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {

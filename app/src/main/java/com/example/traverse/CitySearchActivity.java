@@ -79,7 +79,7 @@ public class CitySearchActivity extends AppCompatActivity {
     private void repopulateRecyclerView() {
         db.collection("locations").get()
             .addOnSuccessListener(querySnapshot -> {
-                LocationAdapter adapter = new LocationAdapter(querySnapshot.getDocuments());
+                LocationAdapter adapter = new LocationAdapter(CitySearchActivity.this, querySnapshot.getDocuments());
                 recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
             });

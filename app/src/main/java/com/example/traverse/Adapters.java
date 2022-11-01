@@ -2,10 +2,12 @@ package com.example.traverse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,28 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
-    private cityClickListener listener;
     Context context;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtCity;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCity = itemView.findViewById(R.id.city_result);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View itemView) {
-            listener.onClick(itemView, getAdapterPosition());
         }
     }
 
     private List<DocumentSnapshot> locationDocuments;
 
-    public LocationAdapter(List<DocumentSnapshot> locationDocumentSnapshots) {
+    public LocationAdapter(Context context, List<DocumentSnapshot> locationDocumentSnapshots) {
+        this.context = context;
         this.locationDocuments = locationDocumentSnapshots;
     }
 
@@ -57,8 +52,12 @@ class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CityDetailsActivity.class);
-                intent.putExtra("city", location.getName());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("location", location);
+                intent.putExtras(bundle);
+
                 context.startActivity(intent);
             }
         });
@@ -67,11 +66,6 @@ class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return locationDocuments.size();
-    }
-
-    public interface cityClickListener{
-        void onClick(View view, int position);
-
     }
 }
 
@@ -89,15 +83,12 @@ class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.search_item,parent,false);
-
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
         Result result = resultArrayList.get(position);
 
         holder.city.setText(result.getCity());
