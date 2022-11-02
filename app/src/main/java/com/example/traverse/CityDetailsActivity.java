@@ -1,11 +1,12 @@
 package com.example.traverse;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,6 +15,7 @@ public class CityDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "Tag";
     TextView city, province;
+    ImageView cityImage;
 
     FirebaseFirestore db;
 
@@ -26,6 +28,7 @@ public class CityDetailsActivity extends AppCompatActivity {
 
         city = findViewById(R.id.city);
         province = findViewById(R.id.province);
+        cityImage = findViewById(R.id.cityImage);
 
         db.document(getIntent().getStringExtra("documentPath")).get()
             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -34,6 +37,11 @@ public class CityDetailsActivity extends AppCompatActivity {
                     Location location = locationSnap.toObject(Location.class);
                     city.setText(location.getName());
                     province.setText(location.getProvince());
+                    String image = location.getImage();
+
+                    Glide.with(CityDetailsActivity.this)
+                            .load(image)
+                            .into(cityImage);
                 }
             });
 

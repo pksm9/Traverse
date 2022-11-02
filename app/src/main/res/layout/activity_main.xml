@@ -11,6 +11,8 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:background="#00FFFFFF"
+        android:clickable="false"
+        android:visibility="visible"
         app:navigationIcon="@drawable/ic_baseline_menu_24" />
 
     <androidx.drawerlayout.widget.DrawerLayout

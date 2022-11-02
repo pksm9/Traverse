@@ -12,6 +12,7 @@ class Location implements Serializable {
     private GeoPoint map;
     private String name;
     private String province;
+    private String image;
 
     public ArrayList<DocumentReference> getActivities() {
         return activities;
@@ -32,4 +33,6 @@ class Location implements Serializable {
     public String getProvince() {
         return province;
     }
+
+    public String getImage() {return image;}
 }

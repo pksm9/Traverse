@@ -48,4 +48,7 @@ dependencies {
     // algolia search
     implementation 'com.algolia:algoliasearch-core:3.16.5'
     implementation 'com.algolia:algoliasearch-java-net:3.16.5'
+
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 }
