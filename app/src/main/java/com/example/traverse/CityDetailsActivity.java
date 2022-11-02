@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CityDetailsActivity extends AppCompatActivity {
@@ -25,9 +27,15 @@ public class CityDetailsActivity extends AppCompatActivity {
         city = findViewById(R.id.city);
         province = findViewById(R.id.province);
 
-        Location location = (Location) getIntent().getExtras().getSerializable("location");
-        Log.d("Traverse", location.getName());
-//        city.setText(getIntent().get("city"));
+        db.document(getIntent().getStringExtra("documentPath")).get()
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot locationSnap) {
+                    Location location = locationSnap.toObject(Location.class);
+                    city.setText(location.getName());
+                    province.setText(location.getProvince());
+                }
+            });
 
         /*DocumentReference documentReference = db.collection("locations").document("wgedi");
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {

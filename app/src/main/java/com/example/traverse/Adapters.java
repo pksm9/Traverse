@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, int position) {
-        Location location = locationDocuments.get(position).toObject(Location.class);
+        DocumentSnapshot locationSnap = locationDocuments.get(position);
+        Location location = locationSnap.toObject(Location.class);
         holder.txtCity.setText(location.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -53,11 +55,7 @@ class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> 
             public void onClick(View v) {
                 Intent intent = new Intent(context, CityDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("location", location);
-                intent.putExtras(bundle);
-
+                intent.putExtra("documentPath", locationSnap.getReference().getPath());
                 context.startActivity(intent);
             }
         });
