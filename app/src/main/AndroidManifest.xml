@@ -4,6 +4,7 @@
     package="com.example.traverse">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Traverse"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="">
+        </meta-data>
         <activity
             android:name=".HotelDetailsActivity"
             android:exported="false" />

@@ -36,3 +36,19 @@ class Location implements Serializable {
 
     public String getImage() {return image;}
 }
+
+class CityComment implements Serializable {
+
+    private String user;
+    private String comment;
+    private float rating;
+    private String time;
+
+    public String getUser() {return user;}
+
+    public String getComment() {return comment;}
+
+    public float getRating() {return rating;}
+
+    public String getTime() {return time;}
+}

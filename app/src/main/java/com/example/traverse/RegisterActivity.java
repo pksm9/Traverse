@@ -1,8 +1,5 @@
 package com.example.traverse;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,20 +9,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText addEmail, addPassword, confirmPassword;
+    EditText addEmail, addUserName, addPassword, confirmPassword;
     Button btnCreate;
     TextView loginPage;
 
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore db;
+
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +38,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         addEmail = findViewById(R.id.addEmail);
+        addUserName = findViewById(R.id.userName);
         addPassword = findViewById(R.id.addPassword);
         confirmPassword = findViewById(R.id.confirmPassword);
         btnCreate = findViewById(R.id.btnCreate);
         loginPage = findViewById(R.id.loginPage);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
         loginPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,15 +65,20 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void TaskAuth() {
-        String add_user_name = addEmail.getText().toString().trim();
-        String add_password = addPassword.getText().toString().trim();
+        String email = addEmail.getText().toString().trim();
+        String userName = addUserName.getText().toString().trim();
+        String password = addPassword.getText().toString().trim();
         String confirm_password = confirmPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(add_user_name)) {
-            Toast.makeText(getApplicationContext(), "Add email", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Add an Email", Toast.LENGTH_LONG).show();
             return;
         }
-        else if (TextUtils.isEmpty(add_password)) {
+        else if (TextUtils.isEmpty(userName)) {
+            Toast.makeText(getApplicationContext(), "Add a User Name", Toast.LENGTH_LONG).show();
+            return;
+        }
+        else if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Add password", Toast.LENGTH_LONG).show();
             return;
         }
@@ -73,16 +86,18 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Add password again to verify", Toast.LENGTH_LONG).show();
             return;
         }
-        else if (!add_password.equals(confirm_password)) {
+        else if (!password.equals(confirm_password)) {
             Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_LONG).show();
             return;
         }
         else {
-            firebaseAuth.createUserWithEmailAndPassword(add_user_name, add_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(RegisterActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+
+                        saveToFireStore(userName);
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -95,5 +110,28 @@ public class RegisterActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void saveToFireStore(String userName) {
+        uid = firebaseAuth.getCurrentUser().getUid();
+        if (!userName.isEmpty()) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("user", userName);
+
+            db.collection("users").document(uid).set(map)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegisterActivity.this, "Failed to make user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }

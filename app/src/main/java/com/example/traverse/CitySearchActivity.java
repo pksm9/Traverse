@@ -7,16 +7,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -25,7 +20,6 @@ public class CitySearchActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ArrayList<Result> resultArrayList;
-    ResultsAdapter resultsAdapter;
     ProgressDialog progressDialog;
     EditText searchCity;
 
@@ -85,25 +79,4 @@ public class CitySearchActivity extends AppCompatActivity {
             });
     }
 
-   public void EventChangeListener() {
-        db.collection("locations")
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        /*if (progressDialog.isShowing())
-                            progressDialog.dismiss();*/
-                        Log.e("Error : ", error.getMessage());
-                        return;
-                    }
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        if (dc.getType() == DocumentChange.Type.ADDED) {
-                            resultArrayList .add(dc.getDocument().toObject(Result.class));
-                        }
-                        resultsAdapter.notifyDataSetChanged();
-
-                    }
-                }
-            });
-    }
 }

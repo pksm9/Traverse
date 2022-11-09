@@ -86,29 +86,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="13dp"
                 android:hint="Email"
                 android:drawableLeft="@drawable/ic_baseline_email_24"
                 android:drawablePadding="15dp"
                 android:paddingLeft="15dp"
-                android:background="@drawable/edit_text_bg"/>
+                android:background="@drawable/edit_text_bg" />
 
-            <!--<EditText
+            <EditText
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="13dp"
                 android:hint="User Name"
                 android:drawableLeft="@drawable/ic_baseline_account_circle_24"
                 android:drawablePadding="15dp"
                 android:paddingLeft="15dp"
-                android:background="@drawable/edit_text_bg"/>-->
+                android:background="@drawable/edit_text_bg" />
 
             <EditText
                 android:id="@+id/addPassword"
@@ -121,24 +121,24 @@
                 android:drawablePadding="15dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="13dp"
                 android:paddingLeft="15dp"
-                android:background="@drawable/edit_text_bg"/>
+                android:background="@drawable/edit_text_bg" />
 
             <EditText
                 android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="35dp"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_bg"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:drawablePadding="15dp"
-                android:paddingLeft="15dp"
-                android:background="@drawable/edit_text_bg"/>
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:paddingLeft="15dp" />
 
             <Button
                 android:id="@+id/btnCreate"
@@ -176,7 +176,6 @@
 
 
             </LinearLayout>
-
 
         </LinearLayout>
         

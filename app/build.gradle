@@ -49,6 +49,10 @@ dependencies {
     implementation 'com.algolia:algoliasearch-core:3.16.5'
     implementation 'com.algolia:algoliasearch-java-net:3.16.5'
 
+    // glide
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+    // google maps api
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }
