@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,10 +30,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.Objects;
 
-public class CityDetailsActivity extends AppCompatActivity {
-
+public class LocationDetailsActivity extends AppCompatActivity {
     TextView city, province, cityRate, cityMap;
     EditText cityComment;
     ImageView cityImage;
@@ -77,10 +78,9 @@ public class CityDetailsActivity extends AppCompatActivity {
         cityComment = findViewById(R.id.addCityComment);
         button = findViewById(R.id.cityCommentBtn);
 
-        uid = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+        uid = firebaseAuth.getCurrentUser().getUid();
 
         this.addFeedback();
-
     }
 
     private void displayMap() {
@@ -95,12 +95,11 @@ public class CityDetailsActivity extends AppCompatActivity {
                                 destination = location.getName();
 
                                 if (destination.isEmpty()) {
-                                    Toast.makeText(CityDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LocationDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     try {
-                                        Uri uri = Uri.parse("www.google.co.in.maps/" + destination);
-                                        //<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.6972463705174!2d80.54281252201248!3d7.160956878291667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae371f91c8825a9%3A0x8180706aa66fa138!2sAmbuluwawa%20Temple!5e0!3m2!1sen!2slk!4v1667957239572!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        Uri uri = Uri.parse("geo:0,0?q=" + destination);
                                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                         intent.setPackage("com.google.android.apps.maps");
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -117,8 +116,6 @@ public class CityDetailsActivity extends AppCompatActivity {
                         });
             }
         });
-
-
     }
 
     private void addFeedback() {
@@ -135,14 +132,37 @@ public class CityDetailsActivity extends AppCompatActivity {
                 String comment = cityComment.getText().toString();
                 float rating = ratingBar.getRating();
 
-                db.collection("users").document(uid).get()
+                db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()){
+
                                     DocumentSnapshot documentSnapshot = task.getResult();
                                     if (documentSnapshot.exists()) {
                                         user = documentSnapshot.getString("user");
+                                        Log.d("Traverse", user);
+
+                                        if ((!comment.isEmpty()) || (!(String.valueOf(rating)).isEmpty())) {
+                                            HashMap<String, Object> commentsMap = new HashMap<>();
+                                            commentsMap.put("user", user);
+                                            commentsMap.put("comment", comment);
+                                            commentsMap.put("rating", rating);
+                                            commentsMap.put("time", FieldValue.serverTimestamp());
+                                            db.document(getIntent().getStringExtra("documentPath")).collection("reviews").document(uid).set(commentsMap)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()) {
+                                                                Toast.makeText(LocationDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
+                                                            }else {
+                                                                Toast.makeText(LocationDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }else {
+                                            Toast.makeText(LocationDetailsActivity.this, "Please add a comment or a Rating !", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                             }
@@ -150,30 +170,9 @@ public class CityDetailsActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(CityDetailsActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LocationDetailsActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-
-                if ((!comment.isEmpty()) || (!(String.valueOf(rating)).isEmpty())) {
-                    HashMap<String, Object> commentsMap = new HashMap<>();
-                    commentsMap.put("user", user);
-                    commentsMap.put("comment", comment);
-                    commentsMap.put("rating", rating);
-                    commentsMap.put("time", FieldValue.serverTimestamp());
-                    db.document(getIntent().getStringExtra("documentPath")).collection("reviews").document(uid).set(commentsMap)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(CityDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        Toast.makeText(CityDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }else {
-                    Toast.makeText(CityDetailsActivity.this, "Please add a comment or a Rating !", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -188,10 +187,46 @@ public class CityDetailsActivity extends AppCompatActivity {
                         province.setText(location.getProvince());
                         String image = location.getImage();
 
-                        Glide.with(CityDetailsActivity.this).load(image).into(cityImage);
+                        Glide.with(LocationDetailsActivity.this).load(image).into(cityImage);
 
                         progressDialog.dismiss();
                     }
+                });
+
+        RecyclerView visitPlaces = findViewById(R.id.placeList);
+        visitPlaces.setHasFixedSize(true);
+        visitPlaces.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+        db.collection("locations").get()
+            .addOnSuccessListener(querySnapshot -> {
+                LocationAdapter adapter = new LocationAdapter(LocationDetailsActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                visitPlaces.setAdapter(adapter);
+            });
+
+        RecyclerView cityActivityList = findViewById(R.id.cityActivityList);
+        cityActivityList.setHasFixedSize(true);
+        cityActivityList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+        db.collection("locations").get()
+            .addOnSuccessListener(querySnapshot -> {
+                LocationAdapter adapter = new LocationAdapter(LocationDetailsActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                cityActivityList.setAdapter(adapter);
+            });
+
+        RecyclerView cityHotelList = findViewById(R.id.cityHotelList);
+        cityHotelList.setHasFixedSize(true);
+        cityHotelList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+        db.collection("locations").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    LocationAdapter adapter = new LocationAdapter(LocationDetailsActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                    cityHotelList.setAdapter(adapter);
+                });
+
+        RecyclerView cityCommentList = findViewById(R.id.cityCommentList);
+        cityCommentList.setHasFixedSize(true);
+        cityCommentList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+        db.document(getIntent().getStringExtra("documentPath")).collection("reviews").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    LocationAdapter adapter = new LocationAdapter(LocationDetailsActivity.this, querySnapshot.getDocuments(), R.layout.each_comment, R.id.rate);
+                    cityCommentList.setAdapter(adapter);
                 });
     }
 

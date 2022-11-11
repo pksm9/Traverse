@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -26,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;
-    AutoCompleteTextView searchText;
-    CardView city_select;
+    CardView city_select, location_select;
 
     FirebaseFirestore db;
 
@@ -41,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        searchText = findViewById(R.id.searchText);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
         city_select = findViewById(R.id.city_select);
+        location_select = findViewById(R.id.location_select);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -76,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent citySearchActivity = new Intent(getApplicationContext(),CitySearchActivity.class);
                 startActivity(citySearchActivity);
+            }
+        });
+
+        location_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locationSearchActivity = new Intent(getApplicationContext(),LocationSearchActivity.class);
+                startActivity(locationSearchActivity);
             }
         });
 

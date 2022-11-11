@@ -119,14 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
             map.put("user", userName);
 
             db.collection("users").document(uid).set(map)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
+                    .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(RegisterActivity.this, "Failed to make user", Toast.LENGTH_SHORT).show();

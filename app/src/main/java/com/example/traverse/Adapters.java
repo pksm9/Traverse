@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,52 +16,62 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
-class LocationAdapter  extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
-    Context context;
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCity;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtCity = itemView.findViewById(R.id.city_result);
-        }
+class ViewHolder extends RecyclerView.ViewHolder {
+    TextView textView;
+    public ViewHolder(@NonNull View itemView, @IdRes int textViewId) {
+        super(itemView);
+        textView = itemView.findViewById(textViewId);
     }
+}
 
-    private List<DocumentSnapshot> locationDocuments;
+abstract class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
+    protected Context context;
+    @IdRes protected int textViewId;
+    @LayoutRes protected int layoutId;
+    protected List<DocumentSnapshot> firebaseDocuments;
 
-    public LocationAdapter(Context context, List<DocumentSnapshot> locationDocumentSnapshots) {
+    public CustomAdapter(Context context, List<DocumentSnapshot> firebaseDocuments, @LayoutRes int layoutId, @IdRes int textViewId) {
         this.context = context;
-        this.locationDocuments = locationDocumentSnapshots;
+        this.firebaseDocuments = firebaseDocuments;
+        this.layoutId = layoutId;
+        this.textViewId = textViewId;
     }
 
     @NonNull
     @Override
-    public LocationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent,false);
-        return new LocationAdapter.ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, int position) {
-        DocumentSnapshot locationSnap = locationDocuments.get(position);
-        Location location = locationSnap.toObject(Location.class);
-        holder.txtCity.setText(location.getName());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CityDetailsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("documentPath", locationSnap.getReference().getPath());
-                context.startActivity(intent);
-            }
-        });
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent,false);
+        return new ViewHolder(view, textViewId);
     }
 
     @Override
     public int getItemCount() {
-        return locationDocuments.size();
+        return firebaseDocuments.size();
+    }
+
+    abstract public void onBindViewHolder(@NonNull ViewHolder holder, int position);
+}
+
+class LocationAdapter extends CustomAdapter {
+    public LocationAdapter(Context context, List<DocumentSnapshot> firebaseDocuments, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, firebaseDocuments, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentSnapshot snap = firebaseDocuments.get(position);
+        Location location = snap.toObject(Location.class);
+        holder.textView.setText(location.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, LocationDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("documentPath", snap.getReference().getPath());
+                context.startActivity(intent);
+            }
+        });
     }
 }
 

@@ -47,11 +47,6 @@
             android:text="#rate"
             android:textStyle="bold"
             android:textSize="16sp"/>
-
-
-
-
-
     </LinearLayout>
 
 

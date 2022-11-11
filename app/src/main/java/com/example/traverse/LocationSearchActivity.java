@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class CitySearchActivity extends AppCompatActivity {
-
+public class LocationSearchActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
     RecyclerView recyclerView;
@@ -23,7 +22,7 @@ public class CitySearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city_search);
+        setContentView(R.layout.activity_location_search);
 
         db = FirebaseFirestore.getInstance();
 
@@ -36,19 +35,21 @@ public class CitySearchActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.city_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CitySearchActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(LocationSearchActivity.this));
         //recyclerView.setNestedScrollingEnabled(false);
         this.repopulateRecyclerView();
 
         searchCity = findViewById(R.id.searchCity);
+
     }
 
     private void repopulateRecyclerView() {
-        db.collection("city").get()
-                .addOnSuccessListener(querySnapshot -> {
-                    LocationAdapter adapter = new LocationAdapter(CitySearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
-                    recyclerView.setAdapter(adapter);
+        db.collection("locations").get()
+            .addOnSuccessListener(querySnapshot -> {
+                LocationAdapter adapter = new LocationAdapter(LocationSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
-                });
+            });
     }
+
 }
