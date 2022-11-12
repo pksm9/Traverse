@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     CardView city_select, location_select;
 
     FirebaseFirestore db;
-
-
     Button btnLogout;
 
     @Override
@@ -41,15 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+
         city_select = findViewById(R.id.city_select);
         location_select = findViewById(R.id.location_select);
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.menu_drawer_open, R.string.menu_drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.menu_drawer_open, R.string.menu_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,10 +98,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -111,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle state) {
+        super.onPostCreate(state);
+        drawerToggle.syncState();
     }
 }
 
