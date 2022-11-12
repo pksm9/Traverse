@@ -12,6 +12,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
@@ -24,15 +25,15 @@ class ViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
-abstract class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
+abstract class CustomAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected Context context;
+    protected List<T> items;
     @IdRes protected int textViewId;
     @LayoutRes protected int layoutId;
-    protected List<DocumentSnapshot> firebaseDocuments;
 
-    public CustomAdapter(Context context, List<DocumentSnapshot> firebaseDocuments, @LayoutRes int layoutId, @IdRes int textViewId) {
+    public CustomAdapter(Context context, List<T> items, @LayoutRes int layoutId, @IdRes int textViewId) {
         this.context = context;
-        this.firebaseDocuments = firebaseDocuments;
+        this.items = items;
         this.layoutId = layoutId;
         this.textViewId = textViewId;
     }
@@ -46,20 +47,44 @@ abstract class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return firebaseDocuments.size();
-    }
+        return this.items.size();
+    };
 
+    @Override
     abstract public void onBindViewHolder(@NonNull ViewHolder holder, int position);
 }
 
-class LocationAdapter extends CustomAdapter {
-    public LocationAdapter(Context context, List<DocumentSnapshot> firebaseDocuments, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, firebaseDocuments, layoutId, textViewId);
+class CitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
+    public CitySnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DocumentSnapshot snap = firebaseDocuments.get(position);
+        DocumentSnapshot snap = items.get(position);
+        City city = snap.toObject(City.class);
+        holder.textView.setText(city.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CityDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("documentPath", snap.getReference().getPath());
+                context.startActivity(intent);
+            }
+        });
+    }
+}
+
+class LocationSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
+    public LocationSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentSnapshot snap = items.get(position);
         Location location = snap.toObject(Location.class);
         holder.textView.setText(location.getName());
 
@@ -70,6 +95,107 @@ class LocationAdapter extends CustomAdapter {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("documentPath", snap.getReference().getPath());
                 context.startActivity(intent);
+            }
+        });
+    }
+}
+
+class LocationReferenceAdapter extends CustomAdapter<DocumentReference> {
+    public LocationReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentReference ref = items.get(position);
+        ref.get()
+            .addOnSuccessListener(snap -> {
+                City city = snap.toObject(City.class);
+                holder.textView.setText(city.getName());
+            });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, LocationDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("documentPath", ref.getPath());
+                context.startActivity(intent);
+            }
+        });
+    }
+}
+
+class ActivityReferenceAdapter extends CustomAdapter<DocumentReference> {
+    public ActivityReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentReference ref = items.get(position);
+        ref.get()
+            .addOnSuccessListener(snap -> {
+                Activity activity = snap.toObject(Activity.class);
+                holder.textView.setText(activity.getName());
+            });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(context, ActivityDetailsActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("documentPath", ref.getPath());
+//                context.startActivity(intent);
+            }
+        });
+    }
+}
+
+class HotelReferenceAdapter extends CustomAdapter<DocumentReference> {
+    public HotelReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentReference ref = items.get(position);
+        ref.get()
+            .addOnSuccessListener(snap -> {
+                Hotel hotel = snap.toObject(Hotel.class);
+                holder.textView.setText(hotel.getName());
+            });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, HotelDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("documentPath", ref.getPath());
+                context.startActivity(intent);
+            }
+        });
+    }
+}
+
+class ReviewSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
+    public ReviewSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+        super(context, items, layoutId, textViewId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DocumentSnapshot snap = items.get(position);
+        Review review = snap.toObject(Review.class);
+        holder.textView.setText(review.getComment());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(context, ActivityDetailsActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("documentPath", ref.getPath());
+//                context.startActivity(intent);
             }
         });
     }

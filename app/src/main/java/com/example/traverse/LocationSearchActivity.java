@@ -40,13 +40,12 @@ public class LocationSearchActivity extends AppCompatActivity {
         this.repopulateRecyclerView();
 
         searchCity = findViewById(R.id.searchCity);
-
     }
 
     private void repopulateRecyclerView() {
         db.collection("locations").get()
             .addOnSuccessListener(querySnapshot -> {
-                LocationAdapter adapter = new LocationAdapter(LocationSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                LocationSnapshotAdapter adapter = new LocationSnapshotAdapter(LocationSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
                 recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
             });
