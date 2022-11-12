@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/purple_500">
+    android:background="#37197f"
+    android:textAlignment="gravity"
+    android:gravity="bottom">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Traverse"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:fontFamily="@font/merienda_bold"
+        android:layout_marginLeft="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#user"
+        android:id="@+id/navUser"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="10dp"
+        app:drawableStartCompat="@drawable/ic_baseline_account_circle_24" />
 
 </LinearLayout>

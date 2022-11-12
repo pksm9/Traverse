@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 
 public class CityDetailsActivity extends AppCompatActivity {
@@ -155,6 +162,8 @@ public class CityDetailsActivity extends AppCompatActivity {
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if(task.isSuccessful()) {
                                                                 Toast.makeText(CityDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
+                                                                ratingBar.setRating(0);
+                                                                cityComment.setText("");
                                                             }else {
                                                                 Toast.makeText(CityDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
@@ -216,6 +225,76 @@ public class CityDetailsActivity extends AppCompatActivity {
                 });
 
 
+    }
+
+    public class FetchData extends AsyncTask<String, Void, String> {
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String forecastJsonStr = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                db.document(getIntent().getStringExtra("documentPath")).get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot locationSnap) {
+                                Location location = locationSnap.toObject(Location.class);
+                                destination = location.getName();
+
+                                if (destination.isEmpty()) {
+                                    Toast.makeText(CityDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+
+                                }
+                            }
+                        });
+
+                final String BASE_URL ="https://api.openweathermap.org/data/2.5/forecast?q="+ destination +"&appid="+"bf5e6047a46ad2469dced210d31f972e";
+                URL url = new URL(BASE_URL);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+
+                if (inputStream == null) { return null; }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line1;
+
+                while ((line1 = reader.readLine()) != null) { buffer.append(line1 + "\n"); }
+                if (buffer.length() == 0) { return null; }
+                forecastJsonStr = buffer.toString();
+
+            } catch (IOException e) {
+                Log.e("Json", "Error ", e);
+                return null;
+            } finally{
+                if (urlConnection != null) { urlConnection.disconnect(); }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("Json", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 }

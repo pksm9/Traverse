@@ -12,19 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:openDrawer="">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"
-            android:background="#00FFFFFF"
-            android:clickable="true"
-            android:visibility="visible"
-            app:navigationIcon="@drawable/ic_baseline_menu_24" />
+        tools:openDrawer="start">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                android:visibility="visible"
+                app:navigationIcon="@drawable/ic_baseline_menu_24" />
 
             <ImageView
                 android:id="@+id/imageView"
