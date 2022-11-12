@@ -201,19 +201,19 @@ public class CityDetailsActivity extends AppCompatActivity {
                         RecyclerView visitPlaces = findViewById(R.id.placeList);
                         visitPlaces.setHasFixedSize(true);
                         visitPlaces.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(CityDetailsActivity.this, city.getLocations(), R.layout.search_item, R.id.textView);
+                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(CityDetailsActivity.this, city.getLocations(), R.layout.list_item, R.id.textView);
                         visitPlaces.setAdapter(visitPlacesAdapter);
 
                         RecyclerView cityActivityList = findViewById(R.id.cityActivityList);
                         cityActivityList.setHasFixedSize(true);
                         cityActivityList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        ActivityReferenceAdapter cityActivityListAdapter = new ActivityReferenceAdapter(CityDetailsActivity.this, city.getActivities(), R.layout.search_item, R.id.textView);
+                        ActivityReferenceAdapter cityActivityListAdapter = new ActivityReferenceAdapter(CityDetailsActivity.this, city.getActivities(), R.layout.list_item, R.id.textView);
                         cityActivityList.setAdapter(cityActivityListAdapter);
 
                         RecyclerView cityHotelList = findViewById(R.id.cityHotelList);
                         cityHotelList.setHasFixedSize(true);
                         cityHotelList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(CityDetailsActivity.this, city.getHotels(), R.layout.search_item, R.id.textView);
+                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(CityDetailsActivity.this, city.getHotels(), R.layout.list_item, R.id.textView);
                         cityHotelList.setAdapter(cityHotelListAdapter);
 
 //                        RecyclerView cityCommentList = findViewById(R.id.cityCommentList);

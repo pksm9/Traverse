@@ -166,7 +166,7 @@
             app:layout_constraintStart_toStartOf="@+id/cityWeather"
             app:layout_constraintTop_toBottomOf="@+id/cityWeather"
             app:layout_constraintVertical_bias="0.02"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.9" />
 
         <TextView
             android:id="@+id/visitPlaces"
@@ -193,7 +193,7 @@
             app:layout_constraintStart_toStartOf="@+id/visitPlaces"
             app:layout_constraintTop_toBottomOf="@+id/visitPlaces"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.9" />
 
         <TextView
             android:id="@+id/activityList"
@@ -219,7 +219,7 @@
             app:layout_constraintStart_toStartOf="@+id/activityList"
             app:layout_constraintTop_toBottomOf="@+id/activityList"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintWidth_percent="0.9"
             app:layout_constraintHeight_percent="0.08"/>
 
         <TextView
@@ -246,7 +246,7 @@
             app:layout_constraintStart_toStartOf="@+id/hotelList"
             app:layout_constraintTop_toBottomOf="@+id/hotelList"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintWidth_percent="0.9"
             app:layout_constraintHeight_percent="0.08"/>
 
 
@@ -274,7 +274,7 @@
             app:layout_constraintVertical_bias="0.05"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHeight_percent="0.2"
-            app:layout_constraintWidth_percent="0.85"/>
+            app:layout_constraintWidth_percent="0.9"/>
 
         <TextView
             android:id="@+id/feedbackTxt"
