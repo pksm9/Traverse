@@ -3,7 +3,6 @@ package com.example.traverse;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.GeoPoint;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 class Location {
@@ -40,6 +39,7 @@ class Location {
 class City {
     private String name;
     private String province;
+    private String image;
     private ArrayList<DocumentReference> activities;
     private ArrayList<DocumentReference> hotels;
     private ArrayList<DocumentReference> locations;
@@ -51,6 +51,8 @@ class City {
     public String getProvince() {
         return province;
     }
+
+    public String getImage() {return image;}
 
     public ArrayList<DocumentReference> getActivities() {
         return activities;

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -185,8 +186,8 @@ public class CityDetailsActivity extends AppCompatActivity {
                         txtCity.setText(city.getName());
                         txtProvince.setText(city.getProvince());
 
-//                        String image = location.getImage();
-//                        Glide.with(CityDetailsActivity.this).load(image).into(cityImage);
+                        String image = city.getImage();
+                        Glide.with(CityDetailsActivity.this).load(image).into(cityImage);
 
                         RecyclerView visitPlaces = findViewById(R.id.placeList);
                         visitPlaces.setHasFixedSize(true);
