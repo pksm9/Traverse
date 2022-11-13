@@ -32,25 +32,15 @@ public class CitySearchActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Fetching Data....");
-        progressDialog.show();
+//        progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.dismiss();
 
         recyclerView = findViewById(R.id.city_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CitySearchActivity.this));
-        this.populateRecyclerView();
 
         searchCity = findViewById(R.id.searchCity);
-    }
-
-    private void populateRecyclerView() {
-//        searchCity.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                return false;
-//            }
-//        });
-
         searchCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -60,20 +50,24 @@ public class CitySearchActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String searchKey = searchCity.getText().toString();
-                db.collection("cities").get()
-                        .addOnSuccessListener(querySnapshot -> {
-                            CitySnapshotAdapter adapter = new CitySnapshotAdapter(CitySearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
-                            recyclerView.setAdapter(adapter);
-                            progressDialog.dismiss();
-                        });
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                populateRecyclerView(s.toString());
             }
         });
+    }
 
+    private void populateRecyclerView(String keyword) {
+        db.collection("cities")
+            .orderBy("name")
+            .startAt(keyword)
+            .endAt(keyword + '\uf8ff').get()
+            .addOnSuccessListener(querySnapshot -> {
+                CitySnapshotAdapter adapter = new CitySnapshotAdapter(CitySearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                recyclerView.setAdapter(adapter);
+//                progressDialog.dismiss();
+            });
     }
 }
