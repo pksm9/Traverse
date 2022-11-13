@@ -20,7 +20,7 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.1485" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1485" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/vie_bg.xml" value="0.196" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_city_details.xml" value="0.1" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_city_details.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_city_search.xml" value="0.21557971014492755" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_drawer_base.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_location_details.xml" value="0.1" />
@@ -34,6 +34,7 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/each_comment.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/header.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/image_item.xml" value="0.1693840579710145" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/list_item.xml" value="0.1693840579710145" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/search_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/toolbar.xml" value="0.2076923076923077" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/menu/menu_drawer.xml" value="0.253125" />

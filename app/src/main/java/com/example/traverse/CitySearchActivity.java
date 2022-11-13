@@ -2,6 +2,8 @@ package com.example.traverse;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,11 +44,36 @@ public class CitySearchActivity extends AppCompatActivity {
     }
 
     private void populateRecyclerView() {
-        db.collection("cities").get()
-            .addOnSuccessListener(querySnapshot -> {
-                CitySnapshotAdapter adapter = new CitySnapshotAdapter(CitySearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
-                recyclerView.setAdapter(adapter);
-                progressDialog.dismiss();
-            });
+//        searchCity.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                return false;
+//            }
+//        });
+
+        searchCity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String searchKey = searchCity.getText().toString();
+                db.collection("cities").get()
+                        .addOnSuccessListener(querySnapshot -> {
+                            CitySnapshotAdapter adapter = new CitySnapshotAdapter(CitySearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                            recyclerView.setAdapter(adapter);
+                            progressDialog.dismiss();
+                        });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 }
