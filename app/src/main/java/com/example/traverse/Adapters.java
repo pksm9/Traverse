@@ -18,7 +18,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.List;
 
 class ViewHolder extends RecyclerView.ViewHolder {
-    TextView textView,province;
+    TextView textView, province;
+
     public ViewHolder(@NonNull View itemView, @IdRes int textViewId) {
         super(itemView);
         textView = itemView.findViewById(textViewId);
@@ -239,16 +240,10 @@ class ReviewSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
         DocumentSnapshot snap = items.get(position);
         Review review = snap.toObject(Review.class);
         holder.textView.setText(review.getComment());
+        holder.province.setText(review.getTime());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(context, ActivityDetailsActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("documentPath", ref.getPath());
-//                context.startActivity(intent);
-            }
-        });
+        TextView userName = holder.itemView.findViewById(R.id.userName);
+        userName.setText(review.getUser());
     }
 }
 

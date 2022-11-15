@@ -19,20 +19,20 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#userName"
             android:textStyle="bold"
             android:textSize="18sp"/>
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/province"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#time"
             android:textSize="14sp"/>
         <TextView
-            android:id="@+id/comment"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#comment"

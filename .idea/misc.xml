@@ -20,18 +20,10 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.1485" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1485" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/drawable/vie_bg.xml" value="0.196" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/font/damion.xml" value="0.23425925925925925" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/font/dancing_script.xml" value="0.23425925925925925" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/font/kalam_bold.xml" value="0.23425925925925925" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_activities_search.xml" value="0.1693840579710145" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_city_details.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_city_search.xml" value="0.21557971014492755" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_deatails.xml" value="0.1693840579710145" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_drawer_base.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_hotel_details.xml" value="0.1693840579710145" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_hotel_search.xml" value="0.1693840579710145" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_item.xml" value="0.1693840579710145" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_location_details.xml" value="0.2" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_location_details.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_location_search.xml" value="0.24003623188405798" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Traverse/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -49,6 +41,8 @@
         <entry key="..\:/Users/assassino/Documents/ProArchives/Android/Prabod/app/src/main/res/layout/activity_city_details.xml" value="0.271875" />
         <entry key="..\:/Users/assassino/Documents/ProArchives/Android/Prabod/app/src/main/res/layout/activity_city_search.xml" value="0.271875" />
         <entry key="..\:/Users/assassino/Documents/ProArchives/Android/Prabod/app/src/main/res/layout/activity_place_details.xml" value="0.2015625" />
+        <entry key="..\:/Users/assassino/Documents/ProArchives/Android/Prabod/app/src/main/res/layout/each_comment.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/assassino/Documents/ProArchives/Android/Prabod/app/src/main/res/layout/image_item.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/activity_city_search.xml" value="0.19322916666666667" />
       </map>
     </option>

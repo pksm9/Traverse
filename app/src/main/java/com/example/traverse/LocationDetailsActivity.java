@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -178,33 +179,38 @@ public class LocationDetailsActivity extends AppCompatActivity {
 
     private void loadDetails() {
         db.document(getIntent().getStringExtra("documentPath")).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot snap) {
-                        Location location = snap.toObject(Location.class);
-                        place.setText(location.getName());
-                        city.setText(location.getCity());
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot snap) {
+                    Location location = snap.toObject(Location.class);
+                    place.setText(location.getName());
+                    city.setText(location.getCity());
 
-                        String image = location.getImage();
-                        Glide.with(LocationDetailsActivity.this).load(image).into(imageView);
+                    String image = location.getImage();
+                    Glide.with(LocationDetailsActivity.this).load(image).into(imageView);
 
-                        RecyclerView hotelList = findViewById(R.id.hotelList);
-                        hotelList.setHasFixedSize(true);
-                        hotelList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
-                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(LocationDetailsActivity.this, location.getHotels(), R.layout.list_item, R.id.textView);
-                        hotelList.setAdapter(cityHotelListAdapter);
+                    RecyclerView hotelList = findViewById(R.id.hotelList);
+                    hotelList.setHasFixedSize(true);
+                    hotelList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+                    HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(LocationDetailsActivity.this, location.getHotels(), R.layout.list_item, R.id.textView);
+                    hotelList.setAdapter(cityHotelListAdapter);
 
-                        RecyclerView cityCommentList = findViewById(R.id.commentList);
-                        cityCommentList.setHasFixedSize(true);
-                        cityCommentList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
-                        //ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, city.getReviews(), R.layout.each_comment, R.id.textView);
-                        //cityCommentList.setAdapter(reviewSnapshotAdapter);
-
-                        progressDialog.dismiss();
-                    }
-                });
+                    progressDialog.dismiss();
+                }
+            });
 
 
+        db.document(getIntent().getStringExtra("documentPath")).collection("reviews").get()
+            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot snap) {
+                    RecyclerView cityCommentList = findViewById(R.id.commentList);
+                    cityCommentList.setHasFixedSize(true);
+                    cityCommentList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+                    ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, snap.getDocuments(), R.layout.each_comment, R.id.textView);
+                    cityCommentList.setAdapter(reviewSnapshotAdapter);
+                }
+            });
     }
 
 }
