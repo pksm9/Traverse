@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00FFFFFF"
-    tools:context=".MainActivity">
+    tools:context=".HotelSearchActivity">
 
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -73,7 +73,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Find a city you like to visit"
+                android:text="Find where you want to stay"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -85,13 +85,13 @@
                 app:layout_constraintVertical_bias="0.00" />
 
             <AutoCompleteTextView
-                android:id="@+id/searchCity"
+                android:id="@+id/searchHotel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_baseline_search_24"
                 android:drawablePadding="10dp"
                 android:foregroundTint="#00FFFFFF"
-                android:hint="Type a city you want to find"
+                android:hint="Type a hotel you wish to find"
                 android:inputType="textCapWords"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -104,7 +104,7 @@
                 app:layout_constraintWidth_percent="0.8" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/city_list"
+                android:id="@+id/hotelList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

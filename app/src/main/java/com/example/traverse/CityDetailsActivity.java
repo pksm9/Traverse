@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,21 +35,22 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class CityDetailsActivity extends AppCompatActivity {
-    TextView txtCity, txtProvince, cityRate, cityMap;
+    TextView txtCity, txtProvince, cityRate, placeMap;
     EditText cityComment;
     ImageView cityImage;
     RatingBar ratingBar;
     ProgressDialog progressDialog;
     Button button;
+
+    TextView placeAltitude, placeTemp, placeHumidity, currentWeather;
+    TextView altitude, avgTemp, humidity, weather;
 
     FirebaseFirestore db;
     FirebaseAuth firebaseAuth;
@@ -54,7 +60,6 @@ public class CityDetailsActivity extends AppCompatActivity {
     private String destination;
 
     private static void onClick(View v) {
-
     }
 
     @Override
@@ -75,10 +80,22 @@ public class CityDetailsActivity extends AppCompatActivity {
         txtCity = findViewById(R.id.city);
         txtProvince = findViewById(R.id.province);
         cityImage = findViewById(R.id.cityImage);
-        cityMap = findViewById(R.id.cityMap);
+        placeMap = findViewById(R.id.cityMap);
+
+        placeAltitude = findViewById(R.id.placeAltitude);
+        placeTemp = findViewById(R.id.placeTemp);
+        placeHumidity = findViewById(R.id.placeHumidity);
+        currentWeather = findViewById(R.id.currentWeather);
+
+        altitude = findViewById(R.id.altitude);
+        avgTemp = findViewById(R.id.avgTemp);
+        humidity = findViewById(R.id.humidity);
+        weather = findViewById(R.id.weather);
+
 
         this.loadDetails();
         this.displayMap();
+        this.getWeatherDetails();
 
         ratingBar = findViewById(R.id.cityRating);
         cityRate = findViewById(R.id.cityRateOnCount);
@@ -90,8 +107,66 @@ public class CityDetailsActivity extends AppCompatActivity {
         this.addFeedback();
     }
 
+    private void getWeatherDetails() {
+
+        db.document(getIntent().getStringExtra("documentPath")).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot locationSnap) {
+                        Location location = locationSnap.toObject(Location.class);
+                        String place = location.getName();
+                       Log.d("place", place);
+                        final String BASE_URL ="https://api.openweathermap.org/data/2.5/weather?q="+place+"&appid="+"bf5e6047a46ad2469dced210d31f972e"+"&units=metric";
+
+
+                        if (place.isEmpty()) {
+                            Toast.makeText(CityDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                        }
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, BASE_URL, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                //Log.d("response", response);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("weather");
+                                    JSONObject weatherObject = jsonArray.getJSONObject(0);
+                                    String weather = weatherObject.getString("description");
+
+                                    JSONObject main = jsonObject.getJSONObject("main");
+                                    String temp = main.getString("temp");
+                                    String humidity = main.getString("humidity");
+
+                                    placeTemp.setText(temp+" °C, ");
+                                    placeHumidity.setText(humidity+"%");
+                                    currentWeather.setText(weather);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                int statusCode = error.networkResponse.statusCode;
+                                //Log.e("code", String.valueOf(statusCode));
+                                if (statusCode==404){
+                                    avgTemp.setText("Weather data not available for this city");
+                                    humidity.setText("");
+                                    weather.setText("");
+
+                                }
+                            }
+                        });
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
+                    }
+                });
+    }
+
     private void displayMap() {
-        cityMap.setOnClickListener(new View.OnClickListener() {
+        placeMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.document(getIntent().getStringExtra("documentPath")).get()
@@ -194,11 +269,12 @@ public class CityDetailsActivity extends AppCompatActivity {
                         City city = snap.toObject(City.class);
                         txtCity.setText(city.getName());
                         txtProvince.setText(city.getProvince());
+                        placeAltitude.setText(city.getAltitude());
 
                         String image = city.getImage();
                         Glide.with(CityDetailsActivity.this).load(image).into(cityImage);
 
-                        RecyclerView visitPlaces = findViewById(R.id.placeList);
+                        RecyclerView visitPlaces = findViewById(R.id.locationList);
                         visitPlaces.setHasFixedSize(true);
                         visitPlaces.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
                         LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(CityDetailsActivity.this, city.getLocations(), R.layout.list_item, R.id.textView);
@@ -216,85 +292,17 @@ public class CityDetailsActivity extends AppCompatActivity {
                         HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(CityDetailsActivity.this, city.getHotels(), R.layout.list_item, R.id.textView);
                         cityHotelList.setAdapter(cityHotelListAdapter);
 
-//                        RecyclerView cityCommentList = findViewById(R.id.cityCommentList);
-//                        cityCommentList.setHasFixedSize(true);
-//                        cityCommentList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
+                       RecyclerView cityCommentList = findViewById(R.id.cityCommentList);
+                       cityCommentList.setHasFixedSize(true);
+                       cityCommentList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
+                       //ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(CityDetailsActivity.this, city.getReviews(), R.layout.each_comment, R.id.textView);
+                       //cityCommentList.setAdapter(reviewSnapshotAdapter);
 
                         progressDialog.dismiss();
                     }
                 });
 
 
-    }
-
-    public class FetchData extends AsyncTask<String, Void, String> {
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String forecastJsonStr = "";
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                db.document(getIntent().getStringExtra("documentPath")).get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot locationSnap) {
-                                Location location = locationSnap.toObject(Location.class);
-                                destination = location.getName();
-
-                                if (destination.isEmpty()) {
-                                    Toast.makeText(CityDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-
-                                }
-                            }
-                        });
-
-                final String BASE_URL ="https://api.openweathermap.org/data/2.5/forecast?q="+ destination +"&appid="+"bf5e6047a46ad2469dced210d31f972e";
-                URL url = new URL(BASE_URL);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-
-                if (inputStream == null) { return null; }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line1;
-
-                while ((line1 = reader.readLine()) != null) { buffer.append(line1 + "\n"); }
-                if (buffer.length() == 0) { return null; }
-                forecastJsonStr = buffer.toString();
-
-            } catch (IOException e) {
-                Log.e("Json", "Error ", e);
-                return null;
-            } finally{
-                if (urlConnection != null) { urlConnection.disconnect(); }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e("Json", "Error closing stream", e);
-                    }
-                }
-            }
-            return null;
-        }
     }
 
 }

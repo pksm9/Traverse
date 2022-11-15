@@ -13,50 +13,48 @@
         tools:context=".LocationDetailsActivity">
 
         <ImageView
-            android:id="@+id/placeImage"
+            android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:elevation="10dp"
             android:scaleType="centerCrop"
-            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHeight_percent="0.23"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintBottom_toBottomOf="@+id/place"
+            app:layout_constraintBottom_toBottomOf="@+id/city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/nuwara_eliya" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/place"
+            android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#Place"
-            android:textSize="28sp"
+            android:layout_marginStart="10dp"
+            android:text="#place"
             android:textColor="@color/black"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeImage"
-            app:layout_constraintVertical_bias="0.01" />
+            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintVertical_bias="0.005" />
 
         <TextView
             android:id="@+id/province"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="#Province"
-            android:textSize="20sp"
             android:textColor="@color/material_on_background_emphasis_medium"
-            app:layout_constraintHorizontal_bias="0.06"
-            app:layout_constraintVertical_bias="0.00"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place" />
+            app:layout_constraintTop_toBottomOf="@+id/city"
+            app:layout_constraintVertical_bias="0.00" />
 
         <TextView
-            android:id="@+id/placeMap"
+            android:id="@+id/map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show in Map"
@@ -74,45 +72,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Altitude "
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.06"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeMap"
+            app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map"
             app:layout_constraintVertical_bias="0.01" />
 
         <TextView
             android:id="@+id/placeAltitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#value"
+            android:text=""
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.00"
             app:layout_constraintStart_toEndOf="@+id/altitude"
-            app:layout_constraintTop_toBottomOf="@+id/placeMap"
+            app:layout_constraintTop_toBottomOf="@+id/map"
             app:layout_constraintVertical_bias="0.01" />
 
         <TextView
             android:id="@+id/avgTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Average Temperature "
+            android:text="Avg Temperature "
+            android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintVertical_bias="0.00"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/altitude"
-            app:layout_constraintTop_toBottomOf="@+id/altitude" />
+            app:layout_constraintTop_toBottomOf="@+id/altitude"
+            app:layout_constraintVertical_bias="0.00" />
 
         <TextView
             android:id="@+id/placeTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#value"
+            android:text=""
             android:textSize="18sp"
             app:layout_constraintHorizontal_bias="0.00"
             app:layout_constraintVertical_bias="0.00"
@@ -125,7 +121,8 @@
             android:id="@+id/humidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=", Humidity"
+            android:text="Humidity "
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +135,7 @@
             android:id="@+id/placeHumidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="18%"
+            android:text=""
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,20 +143,42 @@
             app:layout_constraintVertical_bias="0.00"
             app:layout_constraintStart_toEndOf="@+id/humidity"
             app:layout_constraintTop_toBottomOf="@+id/placeAltitude" />
-
         <TextView
-            android:id="@+id/placeWeather"
+            android:id="@+id/weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Check Weather Here"
+            android:text="Current Weather : "
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
             app:layout_constraintStart_toStartOf="@+id/avgTemp"
             app:layout_constraintTop_toBottomOf="@+id/avgTemp"
-            app:layout_constraintVertical_bias="0.004" />
+            app:layout_constraintVertical_bias="0.00" />
+
+        <TextView
+            android:id="@+id/currentWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/weather"
+            app:layout_constraintTop_toBottomOf="@+id/avgTemp"
+            app:layout_constraintVertical_bias="0.00" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/cityWeather"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Check Weather Here"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="16sp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.00"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/avgTemp"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/avgTemp"-->
+        <!--            app:layout_constraintVertical_bias="0.004" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/imageList"
@@ -167,94 +186,12 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintHeight_percent="0.18"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/placeWeather"
-            app:layout_constraintTop_toBottomOf="@+id/placeWeather"
-            app:layout_constraintVertical_bias="0.02"
-            app:layout_constraintWidth_percent="0.8" />
-
-        <TextView
-            android:id="@+id/visitPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Places to visit"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toStartOf="@+id/imageList"
-            app:layout_constraintTop_toBottomOf="@+id/imageList"
-            app:layout_constraintVertical_bias="0.03" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/placeList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/visitPlaces"
-            app:layout_constraintTop_toBottomOf="@+id/visitPlaces"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8" />
-
-        <TextView
-            android:id="@+id/activityList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activities to do"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toStartOf="@+id/placeList"
-            app:layout_constraintTop_toBottomOf="@+id/placeList"
-            app:layout_constraintVertical_bias="0.03" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/placeActivityList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/activityList"
-            app:layout_constraintTop_toBottomOf="@+id/activityList"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8"
-            app:layout_constraintHeight_percent="0.08"/>
-
-        <TextView
-            android:id="@+id/hotelList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hotels nearby"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toStartOf="@+id/placeActivityList"
-            app:layout_constraintTop_toBottomOf="@+id/placeActivityList"
-            app:layout_constraintVertical_bias="0.03" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/placeHotelList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/hotelList"
-            app:layout_constraintTop_toBottomOf="@+id/hotelList"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.8"
-            app:layout_constraintHeight_percent="0.08"/>
-
+            app:layout_constraintStart_toStartOf="@+id/weather"
+            app:layout_constraintTop_toBottomOf="@+id/weather"
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent="0.9" />
 
         <TextView
             android:id="@+id/reviews"
@@ -265,12 +202,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toStartOf="@+id/placeHotelList"
-            app:layout_constraintTop_toBottomOf="@+id/placeHotelList"
+            app:layout_constraintStart_toStartOf="@+id/imageList"
+            app:layout_constraintTop_toBottomOf="@+id/imageList"
             app:layout_constraintVertical_bias="0.04" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/placeCommentList"
+            android:id="@+id/commentList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/reviews"
@@ -280,7 +217,7 @@
             app:layout_constraintVertical_bias="0.05"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHeight_percent="0.2"
-            app:layout_constraintWidth_percent="0.85"/>
+            app:layout_constraintWidth_percent="0.9"/>
 
         <TextView
             android:id="@+id/feedbackTxt"
@@ -288,19 +225,20 @@
             android:layout_height="wrap_content"
             android:text="Add a Feedback"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/placeRating"
+            app:layout_constraintBottom_toBottomOf="@+id/rating"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeCommentList"
+            app:layout_constraintTop_toBottomOf="@+id/commentList"
             app:layout_constraintVertical_bias="0.2" />
 
         <RatingBar
-            android:id="@+id/placeRating"
+            android:id="@+id/rating"
             style="?android:ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stepSize="1"
+            android:stepSize="0.5"
+            android:isIndicator="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
@@ -309,40 +247,43 @@
             app:layout_constraintVertical_bias="0.1" />
 
         <TextView
-            android:id="@+id/placeRateOnCount"
+            android:id="@+id/rateOnCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
-            android:text="4.5"
-            app:layout_constraintBottom_toBottomOf="@+id/placeRating"
+            android:text="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/rating"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintHorizontal_bias="0.06"
-            app:layout_constraintStart_toEndOf="@+id/placeRating"
+            app:layout_constraintStart_toEndOf="@+id/rating"
             app:layout_constraintTop_toBottomOf="@+id/feedbackTxt"
             android:textSize="23sp" />
 
         <EditText
-            android:id="@+id/addPlaceComment"
+            android:id="@+id/addComment"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="Add a Comment"
+            android:background="@android:drawable/editbox_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.14"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeRating"
-            app:layout_constraintWidth_percent="0.7" />
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            app:layout_constraintWidth_percent="0.7"
+            android:layout_marginBottom="10dp"/>
 
         <Button
-            android:id="@+id/placeCommentBtn"
+            android:id="@+id/commentBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SUBMIT"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/addPlaceComment"
-            app:layout_constraintTop_toBottomOf="@+id/placeRating"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toEndOf="@+id/addComment"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"/>
 
 
 

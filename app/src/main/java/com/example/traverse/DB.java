@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 class Location {
     private ArrayList<DocumentReference> activities;
-    private String district;
+    private String city;
     private GeoPoint map;
     private String name;
     private String province;
@@ -17,8 +17,8 @@ class Location {
         return activities;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getCity() {
+        return city;
     }
 
     public GeoPoint getMap() {
@@ -40,9 +40,13 @@ class City {
     private String name;
     private String province;
     private String image;
+    private String altitude;
     private ArrayList<DocumentReference> activities;
     private ArrayList<DocumentReference> hotels;
     private ArrayList<DocumentReference> locations;
+    private ArrayList<DocumentReference> reviews;
+
+    public String getAltitude() {return altitude;}
 
     public String getName() {
         return name;
@@ -65,6 +69,8 @@ class City {
     public ArrayList<DocumentReference> getLocations() {
         return locations;
     }
+
+    public ArrayList<DocumentReference> getReviews() {return reviews;}
 }
 
 class Activity {

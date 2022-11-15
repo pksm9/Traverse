@@ -29,8 +29,8 @@
             android:id="@+id/province"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#province"
-            android:textSize="18sp"/>
+            android:text=""
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

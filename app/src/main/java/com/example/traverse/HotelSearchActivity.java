@@ -1,10 +1,14 @@
 package com.example.traverse;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,9 +17,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,30 +29,37 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity {
+public class HotelSearchActivity extends AppCompatActivity {
+
+    FirebaseFirestore db;
+    FirebaseAuth firebaseAuth;
+    RecyclerView recyclerView;
+    ProgressDialog progressDialog;
+    EditText searchHotel;
+    View header;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;
-    TextView navUser;
-    View header;
-    CardView city_select, location_select, activity_select, hotel_select;
 
+    private static final String TAG = "FirestoreSearch";
     private String user;
-
-    FirebaseFirestore db;
-    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_hotel_search);
 
-        city_select = findViewById(R.id.city_select);
-        location_select = findViewById(R.id.location_select);
-        activity_select = findViewById(R.id.activity_select);
-        hotel_select = findViewById(R.id.hotel_select);
+        db = FirebaseFirestore.getInstance();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Fetching Data....");
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.dismiss();
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
@@ -63,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
         header = navigationView.getHeaderView(0);
-        navUser = header.findViewById(R.id.navUser);
+        TextView navUser = header.findViewById(R.id.navUser);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.menu_drawer_open, R.string.menu_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -114,58 +125,36 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HotelSearchActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        city_select.setOnClickListener(new View.OnClickListener() {
+
+        recyclerView = findViewById(R.id.hotelList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(HotelSearchActivity.this));
+
+        populateRecyclerView("");
+
+        searchHotel= findViewById(R.id.searchHotel);
+        searchHotel.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                Intent citySearchActivity = new Intent(getApplicationContext(),CitySearchActivity.class);
-                startActivity(citySearchActivity);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                populateRecyclerView(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
-
-        location_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent locationSearchActivity = new Intent(getApplicationContext(),LocationSearchActivity.class);
-                startActivity(locationSearchActivity);
-            }
-        });
-
-        activity_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activitiesSearchActivity = new Intent(getApplicationContext(),ActivitiesSearchActivity.class);
-                startActivity(activitiesSearchActivity);
-            }
-        });
-
-        hotel_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent hotelSearchActivity = new Intent(getApplicationContext(),HotelSearchActivity.class);
-                startActivity(hotelSearchActivity);
-            }
-        });
-
-
 
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (drawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                drawerLayout.openDrawer(GravityCompat.START);
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     protected void onPostCreate(Bundle state) {
@@ -173,9 +162,21 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
 
-    public void onBackPressed(){
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
+//    public void onBackPressed(){
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        }
+//    }
+
+    private void populateRecyclerView(String keyword) {
+        db.collection("hotels")
+                .orderBy("name")
+                .startAt(keyword)
+                .endAt(keyword + '\uf8ff').get()
+                .addOnSuccessListener(querySnapshot -> {
+                    HotelSnapshotAdapter adapter = new HotelSnapshotAdapter(HotelSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                    recyclerView.setAdapter(adapter);
+                    progressDialog.dismiss();
+                });
     }
 }
