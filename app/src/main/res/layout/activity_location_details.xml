@@ -18,7 +18,7 @@
             android:layout_height="0dp"
             android:elevation="10dp"
             android:scaleType="centerCrop"
-            app:layout_constraintHeight_percent="0.23"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintBottom_toBottomOf="@+id/city"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/city"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -41,16 +41,16 @@
             app:layout_constraintVertical_bias="0.005" />
 
         <TextView
-            android:id="@+id/province"
+            android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#Province"
+            android:text="#city"
             android:textColor="@color/material_on_background_emphasis_medium"
             android:textSize="20sp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/city"
+            app:layout_constraintTop_toBottomOf="@+id/location"
             app:layout_constraintVertical_bias="0.00" />
 
         <TextView
@@ -63,122 +63,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/province"
-            app:layout_constraintVertical_bias="0.02"
+            app:layout_constraintTop_toBottomOf="@+id/city"
+            app:layout_constraintVertical_bias="0.03"
             app:layout_constraintHorizontal_bias="0.06"/>
 
-        <TextView
-            android:id="@+id/altitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Altitude "
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/map"
-            app:layout_constraintTop_toBottomOf="@+id/map"
-            app:layout_constraintVertical_bias="0.01" />
-
-        <TextView
-            android:id="@+id/placeAltitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toEndOf="@+id/altitude"
-            app:layout_constraintTop_toBottomOf="@+id/map"
-            app:layout_constraintVertical_bias="0.01" />
-
-        <TextView
-            android:id="@+id/avgTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Avg Temperature "
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/altitude"
-            app:layout_constraintTop_toBottomOf="@+id/altitude"
-            app:layout_constraintVertical_bias="0.00" />
-
-        <TextView
-            android:id="@+id/placeTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintVertical_bias="0.00"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/avgTemp"
-            app:layout_constraintTop_toBottomOf="@+id/placeAltitude" />
-
-        <TextView
-            android:id="@+id/humidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Humidity "
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toEndOf="@+id/placeTemp"
-            app:layout_constraintTop_toBottomOf="@+id/placeAltitude"
-            app:layout_constraintVertical_bias="0.00" />
-
-        <TextView
-            android:id="@+id/placeHumidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintVertical_bias="0.00"
-            app:layout_constraintStart_toEndOf="@+id/humidity"
-            app:layout_constraintTop_toBottomOf="@+id/placeAltitude" />
-        <TextView
-            android:id="@+id/weather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current Weather : "
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/avgTemp"
-            app:layout_constraintTop_toBottomOf="@+id/avgTemp"
-            app:layout_constraintVertical_bias="0.00" />
-
-        <TextView
-            android:id="@+id/currentWeather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/weather"
-            app:layout_constraintTop_toBottomOf="@+id/avgTemp"
-            app:layout_constraintVertical_bias="0.00" />
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/cityWeather"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Check Weather Here"-->
-        <!--            android:textColor="@color/black"-->
-        <!--            android:textSize="16sp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.00"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/avgTemp"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/avgTemp"-->
-        <!--            app:layout_constraintVertical_bias="0.004" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/imageList"
@@ -188,10 +76,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.18"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/weather"
-            app:layout_constraintTop_toBottomOf="@+id/weather"
-            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map"
+            app:layout_constraintVertical_bias="0.02"
             app:layout_constraintWidth_percent="0.9" />
+
+        <TextView
+            android:id="@+id/hotels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hotels nearby"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.00"
+            app:layout_constraintStart_toStartOf="@+id/imageList"
+            app:layout_constraintTop_toBottomOf="@+id/imageList"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hotelList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/hotels"
+            app:layout_constraintTop_toBottomOf="@+id/hotels"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintHeight_percent="0.08"/>
 
         <TextView
             android:id="@+id/reviews"
@@ -202,8 +117,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.00"
-            app:layout_constraintStart_toStartOf="@+id/imageList"
-            app:layout_constraintTop_toBottomOf="@+id/imageList"
+            app:layout_constraintStart_toStartOf="@+id/hotelList"
+            app:layout_constraintTop_toBottomOf="@+id/hotelList"
             app:layout_constraintVertical_bias="0.04" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -216,7 +131,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.05"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.15"
             app:layout_constraintWidth_percent="0.9"/>
 
         <TextView

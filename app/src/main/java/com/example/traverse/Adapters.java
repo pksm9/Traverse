@@ -117,7 +117,7 @@ class ActivitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ActivityDeatailsActivity.class);
+                Intent intent = new Intent(context, ActivityDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("documentPath", snap.getReference().getPath());
                 context.startActivity(intent);

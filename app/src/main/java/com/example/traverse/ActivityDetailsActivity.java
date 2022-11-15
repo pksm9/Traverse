@@ -1,15 +1,11 @@
 package com.example.traverse;
 
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,11 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class LocationDetailsActivity extends AppCompatActivity {
+class ActivityDetailsActivity extends AppCompatActivity {
 
-    TextView place, city, rate, map;
+    TextView activityName, rate;
     EditText addComment;
-    ImageView imageView;
     RatingBar ratingBar;
     ProgressDialog progressDialog;
     Button button;
@@ -45,12 +39,11 @@ public class LocationDetailsActivity extends AppCompatActivity {
 
     private String uid;
     private String user;
-    private String destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_details);
+        setContentView(R.layout.activity_deatails);
 
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -62,13 +55,9 @@ public class LocationDetailsActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
 
-        place = findViewById(R.id.location);
-        city = findViewById(R.id.city);
-        imageView = findViewById(R.id.image);
-        map = findViewById(R.id.map);
+        activityName = findViewById(R.id.activity);
 
         this.loadDetails();
-        this.displayMap();
 
         ratingBar = findViewById(R.id.rating);
         rate = findViewById(R.id.rateOnCount);
@@ -80,40 +69,7 @@ public class LocationDetailsActivity extends AppCompatActivity {
         this.addFeedback();
     }
 
-    private void displayMap() {
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.document(getIntent().getStringExtra("documentPath")).get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot locationSnap) {
-                                Location location = locationSnap.toObject(Location.class);
-                                destination = location.getName();
 
-                                if (destination.isEmpty()) {
-                                    Toast.makeText(LocationDetailsActivity.this, "Error Loading details...", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    try {
-                                        Uri uri = Uri.parse("geo:0,0?q=" + destination);
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                        intent.setPackage("com.google.android.apps.maps");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    }catch (ActivityNotFoundException e) {
-                                        // if maps not installed redirect to play store
-                                        Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    }
-                                }
-                            }
-                        });
-            }
-        });
-    }
 
     private void addFeedback() {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -151,16 +107,16 @@ public class LocationDetailsActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if(task.isSuccessful()) {
-                                                                Toast.makeText(LocationDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(ActivityDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
                                                                 ratingBar.setRating(0);
                                                                 addComment.setText("");
                                                             }else {
-                                                                Toast.makeText(LocationDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(ActivityDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
                                                         }
                                                     });
                                         }else {
-                                            Toast.makeText(LocationDetailsActivity.this, "Please add a comment or a Rating !", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ActivityDetailsActivity.this, "Please add a comment or a Rating !", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
@@ -169,7 +125,7 @@ public class LocationDetailsActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LocationDetailsActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityDetailsActivity.this, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -181,22 +137,18 @@ public class LocationDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot snap) {
-                        Location location = snap.toObject(Location.class);
-                        place.setText(location.getName());
-                        city.setText(location.getCity());
+                        Activity activity = snap.toObject(Activity.class);
+                        activityName.setText(activity.getName());
 
-                        String image = location.getImage();
-                        Glide.with(LocationDetailsActivity.this).load(image).into(imageView);
-
-                        RecyclerView hotelList = findViewById(R.id.hotelList);
-                        hotelList.setHasFixedSize(true);
-                        hotelList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
-                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(LocationDetailsActivity.this, location.getHotels(), R.layout.list_item, R.id.textView);
-                        hotelList.setAdapter(cityHotelListAdapter);
+                        RecyclerView visitPlaces = findViewById(R.id.locationList);
+                        visitPlaces.setHasFixedSize(true);
+                        visitPlaces.setLayoutManager(new LinearLayoutManager(ActivityDetailsActivity.this));
+                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(ActivityDetailsActivity.this, activity.getLocations(), R.layout.list_item, R.id.textView);
+                        visitPlaces.setAdapter(visitPlacesAdapter);
 
                         RecyclerView cityCommentList = findViewById(R.id.commentList);
                         cityCommentList.setHasFixedSize(true);
-                        cityCommentList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+                        cityCommentList.setLayoutManager(new LinearLayoutManager(ActivityDetailsActivity.this));
                         //ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, city.getReviews(), R.layout.each_comment, R.id.textView);
                         //cityCommentList.setAdapter(reviewSnapshotAdapter);
 

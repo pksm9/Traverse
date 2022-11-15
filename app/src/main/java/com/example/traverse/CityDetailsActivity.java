@@ -59,9 +59,6 @@ public class CityDetailsActivity extends AppCompatActivity {
     private String user;
     private String destination;
 
-    private static void onClick(View v) {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

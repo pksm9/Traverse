@@ -6,15 +6,16 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 
 class Location {
-    private ArrayList<DocumentReference> activities;
+    private ArrayList<DocumentReference> hotels;
     private String city;
     private GeoPoint map;
+    private String altitude;
     private String name;
     private String province;
     private String image;
 
-    public ArrayList<DocumentReference> getActivities() {
-        return activities;
+    public ArrayList<DocumentReference> getHotels() {
+        return hotels;
     }
 
     public String getCity() {
@@ -34,6 +35,8 @@ class Location {
     }
 
     public String getImage() {return image;}
+
+    public String getAltitude() {return altitude;}
 }
 
 class City {
@@ -95,11 +98,14 @@ class Hotel {
     private String city;
     private String name;
     private String province;
+    private String image;
     private ArrayList<DocumentReference> locations;
 
     public String getCity() {
         return city;
     }
+
+    public String getImage() {return image;}
 
     public String getName() {
         return name;
