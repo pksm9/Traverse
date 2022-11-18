@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 class Location {
     private ArrayList<DocumentReference> hotels;
+    private ArrayList<String> images;
     private String city;
     private GeoPoint map;
     private String altitude;
@@ -37,6 +38,8 @@ class Location {
     public String getImage() {return image;}
 
     public String getAltitude() {return altitude;}
+
+    public ArrayList<String> getImages() {return images;}
 }
 
 class City {
@@ -44,6 +47,7 @@ class City {
     private String province;
     private String image;
     private String altitude;
+    private ArrayList<String> images;
     private ArrayList<DocumentReference> activities;
     private ArrayList<DocumentReference> hotels;
     private ArrayList<DocumentReference> locations;
@@ -74,16 +78,21 @@ class City {
     }
 
     public ArrayList<DocumentReference> getReviews() {return reviews;}
+
+    public ArrayList<String> getImages() {return images;}
 }
 
 class Activity {
     private String name;
+    private ArrayList<String> images;
     private ArrayList<DocumentReference> cities;
     private ArrayList<DocumentReference> locations;
 
     public String getName() {
         return name;
     }
+
+    public ArrayList<String> getImages() {return images;}
 
     public ArrayList<DocumentReference> getCities() {
         return cities;
@@ -99,6 +108,7 @@ class Hotel {
     private String name;
     private String province;
     private String image;
+    private ArrayList<String> images;
     private ArrayList<DocumentReference> locations;
 
     public String getCity() {
@@ -118,20 +128,19 @@ class Hotel {
     public ArrayList<DocumentReference> getLocations() {
         return locations;
     }
+
+    public ArrayList<String> getImages() {return images;}
 }
 
 class Review {
     private String user;
     private String comment;
     private float rating;
-    private String time;
 
     public String getUser() {return user;}
 
     public String getComment() {return comment;}
 
     public float getRating() {return rating;}
-
-    public String getTime() {return time;}
 }
 

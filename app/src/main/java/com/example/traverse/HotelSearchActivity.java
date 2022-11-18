@@ -174,7 +174,7 @@ public class HotelSearchActivity extends AppCompatActivity {
                 .startAt(keyword)
                 .endAt(keyword + '\uf8ff').get()
                 .addOnSuccessListener(querySnapshot -> {
-                    HotelSnapshotAdapter adapter = new HotelSnapshotAdapter(HotelSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                    HotelSnapshotAdapter adapter = new HotelSnapshotAdapter(HotelSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item);
                     recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
                 });

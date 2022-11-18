@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -12,18 +13,15 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
 class ViewHolder extends RecyclerView.ViewHolder {
-    TextView textView, province;
-
-    public ViewHolder(@NonNull View itemView, @IdRes int textViewId) {
+    public ViewHolder(@NonNull View itemView) {
         super(itemView);
-        textView = itemView.findViewById(textViewId);
-        province = itemView.findViewById(R.id.province);
     }
 }
 
@@ -33,18 +31,17 @@ abstract class CustomAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     @IdRes protected int textViewId;
     @LayoutRes protected int layoutId;
 
-    public CustomAdapter(Context context, List<T> items, @LayoutRes int layoutId, @IdRes int textViewId) {
+    public CustomAdapter(Context context, List<T> items, @LayoutRes int layoutId) {
         this.context = context;
         this.items = items;
         this.layoutId = layoutId;
-        this.textViewId = textViewId;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent,false);
-        return new ViewHolder(view, textViewId);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -57,16 +54,20 @@ abstract class CustomAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 }
 
 class CitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
-    public CitySnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public CitySnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DocumentSnapshot snap = items.get(position);
         City city = snap.toObject(City.class);
-        holder.textView.setText(city.getName());
-        holder.province.setText(city.getProvince());
+
+        TextView txtName = holder.itemView.findViewById(R.id.textView);
+        txtName.setText(city.getName());
+
+        TextView txtProvince = holder.itemView.findViewById(R.id.subTextView);
+        txtProvince.setText(city.getProvince());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,16 +82,20 @@ class CitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
 }
 
 class LocationSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
-    public LocationSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public LocationSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DocumentSnapshot snap = items.get(position);
         Location location = snap.toObject(Location.class);
-        holder.textView.setText(location.getName());
-        holder.province.setText(location.getCity());
+
+        TextView txtName = holder.itemView.findViewById(R.id.textView);
+        txtName.setText(location.getName());
+
+        TextView txtProvince = holder.itemView.findViewById(R.id.subTextView);
+        txtProvince.setText(location.getProvince());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,15 +110,17 @@ class LocationSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
 }
 
 class ActivitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
-    public ActivitySnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public ActivitySnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DocumentSnapshot snap = items.get(position);
         Activity activity = snap.toObject(Activity.class);
-        holder.textView.setText(activity.getName());
+
+        TextView txtName = holder.itemView.findViewById(R.id.textView);
+        txtName.setText(activity.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,16 +135,20 @@ class ActivitySnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
 }
 
 class HotelSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
-    public HotelSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public HotelSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DocumentSnapshot snap = items.get(position);
         Hotel hotel = snap.toObject(Hotel.class);
-        holder.textView.setText(hotel.getName());
-        holder.province.setText(hotel.getCity());
+
+        TextView txtName = holder.itemView.findViewById(R.id.textView);
+        txtName.setText(hotel.getName());
+
+        TextView txtCity = holder.itemView.findViewById(R.id.subTextView);
+        txtCity.setText(hotel.getCity());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,8 +163,8 @@ class HotelSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
 }
 
 class LocationReferenceAdapter extends CustomAdapter<DocumentReference> {
-    public LocationReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public LocationReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
@@ -162,8 +173,12 @@ class LocationReferenceAdapter extends CustomAdapter<DocumentReference> {
         ref.get()
             .addOnSuccessListener(snap -> {
                 City city = snap.toObject(City.class);
-                holder.textView.setText(city.getName());
-                holder.province.setText(city.getProvince());
+
+                TextView txtName = holder.itemView.findViewById(R.id.textView);
+                txtName.setText(city.getName());
+
+                TextView txtProvince = holder.itemView.findViewById(R.id.subTextView);
+                txtProvince.setText(city.getProvince());
             });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -179,8 +194,8 @@ class LocationReferenceAdapter extends CustomAdapter<DocumentReference> {
 }
 
 class ActivityReferenceAdapter extends CustomAdapter<DocumentReference> {
-    public ActivityReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public ActivityReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
@@ -189,24 +204,26 @@ class ActivityReferenceAdapter extends CustomAdapter<DocumentReference> {
         ref.get()
             .addOnSuccessListener(snap -> {
                 Activity activity = snap.toObject(Activity.class);
-                holder.textView.setText(activity.getName());
+
+                TextView txtName = holder.itemView.findViewById(R.id.textView);
+                txtName.setText(activity.getName());
             });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, ActivityDetailsActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("documentPath", ref.getPath());
-//                context.startActivity(intent);
+               Intent intent = new Intent(context, ActivityDetailsActivity.class);
+               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               intent.putExtra("documentPath", ref.getPath());
+               context.startActivity(intent);
             }
         });
     }
 }
 
 class HotelReferenceAdapter extends CustomAdapter<DocumentReference> {
-    public HotelReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public HotelReferenceAdapter(Context context, List<DocumentReference> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
@@ -215,7 +232,12 @@ class HotelReferenceAdapter extends CustomAdapter<DocumentReference> {
         ref.get()
             .addOnSuccessListener(snap -> {
                 Hotel hotel = snap.toObject(Hotel.class);
-                holder.textView.setText(hotel.getName());
+
+                TextView txtName = holder.itemView.findViewById(R.id.textView);
+                txtName.setText(hotel.getName());
+
+                TextView txtProvince = holder.itemView.findViewById(R.id.subTextView);
+                txtProvince.setText(hotel.getCity());
             });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -231,19 +253,37 @@ class HotelReferenceAdapter extends CustomAdapter<DocumentReference> {
 }
 
 class ReviewSnapshotAdapter extends CustomAdapter<DocumentSnapshot> {
-    public ReviewSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId, @IdRes int textViewId) {
-        super(context, items, layoutId, textViewId);
+    public ReviewSnapshotAdapter(Context context, List<DocumentSnapshot> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DocumentSnapshot snap = items.get(position);
         Review review = snap.toObject(Review.class);
-        holder.textView.setText(review.getComment());
-        holder.province.setText(review.getTime());
 
         TextView userName = holder.itemView.findViewById(R.id.userName);
         userName.setText(review.getUser());
+
+        TextView txtComment = holder.itemView.findViewById(R.id.textView);
+        txtComment.setText(review.getComment());
+
+        TextView txtRate = holder.itemView.findViewById(R.id.rate);
+        txtRate.setText(String.valueOf(review.getRating()));
+    }
+}
+
+class ImageUrlAdapter extends CustomAdapter<String> {
+    public ImageUrlAdapter(Context context, List<String> items, @LayoutRes int layoutId) {
+        super(context, items, layoutId);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String url = items.get(position);
+
+        ImageView img = holder.itemView.findViewById(R.id.img);
+        Glide.with(context).load(url).into(img);
     }
 }
 

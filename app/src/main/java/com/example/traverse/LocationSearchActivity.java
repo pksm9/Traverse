@@ -173,7 +173,7 @@ public class LocationSearchActivity extends AppCompatActivity {
                 .startAt(keyword)
                 .endAt(keyword + '\uf8ff').get()
                 .addOnSuccessListener(querySnapshot -> {
-                    LocationSnapshotAdapter adapter = new LocationSnapshotAdapter(LocationSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item, R.id.textView);
+                    LocationSnapshotAdapter adapter = new LocationSnapshotAdapter(LocationSearchActivity.this, querySnapshot.getDocuments(), R.layout.search_item);
                     recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
                 });

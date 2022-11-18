@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -128,6 +129,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String comment = addComment.getText().toString();
                 float rating = ratingBar.getRating();
+                String time = String.valueOf(FieldValue.serverTimestamp());
 
                 db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -145,7 +147,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
                                             commentsMap.put("user", user);
                                             commentsMap.put("comment", comment);
                                             commentsMap.put("rating", rating);
-                                            commentsMap.put("time", FieldValue.serverTimestamp());
+                                            commentsMap.put("time", time);
                                             db.document(getIntent().getStringExtra("documentPath")).collection("reviews").document(uid).set(commentsMap)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
@@ -191,19 +193,32 @@ public class HotelDetailsActivity extends AppCompatActivity {
                         RecyclerView visitPlaces = findViewById(R.id.locationList);
                         visitPlaces.setHasFixedSize(true);
                         visitPlaces.setLayoutManager(new LinearLayoutManager(HotelDetailsActivity.this));
-                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(HotelDetailsActivity.this, hotel.getLocations(), R.layout.list_item, R.id.textView);
+                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(HotelDetailsActivity.this, hotel.getLocations(), R.layout.list_item);
                         visitPlaces.setAdapter(visitPlacesAdapter);
 
-                        RecyclerView cityCommentList = findViewById(R.id.commentList);
-                        cityCommentList.setHasFixedSize(true);
-                        cityCommentList.setLayoutManager(new LinearLayoutManager(HotelDetailsActivity.this));
-                        //ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, city.getReviews(), R.layout.each_comment, R.id.textView);
-                        //cityCommentList.setAdapter(reviewSnapshotAdapter);
+                        RecyclerView imageList = findViewById(R.id.imageList);
+                        imageList.setHasFixedSize(true);
+                        imageList.setLayoutManager(new LinearLayoutManager(HotelDetailsActivity.this));
+                        ImageUrlAdapter imageListAdapter = new ImageUrlAdapter(HotelDetailsActivity.this, hotel.getImages(), R.layout.image_item);
+                        imageList.setAdapter(imageListAdapter);
 
                         progressDialog.dismiss();
                     }
                 });
+        populateReviews();
+    }
 
-
+    public void populateReviews() {
+        db.document(getIntent().getStringExtra("documentPath")).collection("reviews").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot snap) {
+                        RecyclerView commentList = findViewById(R.id.commentList);
+                        commentList.setHasFixedSize(true);
+                        commentList.setLayoutManager(new LinearLayoutManager(HotelDetailsActivity.this));
+                        ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(HotelDetailsActivity.this, snap.getDocuments(), R.layout.each_comment);
+                        commentList.setAdapter(reviewSnapshotAdapter);
+                    }
+                });
     }
 }

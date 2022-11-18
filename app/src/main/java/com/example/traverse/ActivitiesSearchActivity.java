@@ -174,7 +174,7 @@ public class ActivitiesSearchActivity extends AppCompatActivity {
                 .startAt(keyword)
                 .endAt(keyword + '\uf8ff').get()
                 .addOnSuccessListener(querySnapshot -> {
-                    ActivitySnapshotAdapter adapter = new ActivitySnapshotAdapter(ActivitiesSearchActivity.this, querySnapshot.getDocuments(), R.layout.activity_item, R.id.textView);
+                    ActivitySnapshotAdapter adapter = new ActivitySnapshotAdapter(ActivitiesSearchActivity.this, querySnapshot.getDocuments(), R.layout.activity_item);
                     recyclerView.setAdapter(adapter);
                     progressDialog.dismiss();
                 });

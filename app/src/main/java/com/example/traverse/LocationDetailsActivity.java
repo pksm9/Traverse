@@ -26,7 +26,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -146,20 +145,20 @@ public class LocationDetailsActivity extends AppCompatActivity {
                                             commentsMap.put("user", user);
                                             commentsMap.put("comment", comment);
                                             commentsMap.put("rating", rating);
-                                            commentsMap.put("time", FieldValue.serverTimestamp());
                                             db.document(getIntent().getStringExtra("documentPath")).collection("reviews").document(uid).set(commentsMap)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if(task.isSuccessful()) {
-                                                                Toast.makeText(LocationDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
-                                                                ratingBar.setRating(0);
-                                                                addComment.setText("");
-                                                            }else {
-                                                                Toast.makeText(LocationDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                            }
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()) {
+                                                            Toast.makeText(LocationDetailsActivity.this, "Comment submitted !", Toast.LENGTH_SHORT).show();
+                                                            ratingBar.setRating(0);
+                                                            addComment.setText("");
+                                                            populateReviews();
+                                                        }else {
+                                                            Toast.makeText(LocationDetailsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                         }
-                                                    });
+                                                    }
+                                                });
                                         }else {
                                             Toast.makeText(LocationDetailsActivity.this, "Please add a comment or a Rating !", Toast.LENGTH_SHORT).show();
                                         }
@@ -192,14 +191,23 @@ public class LocationDetailsActivity extends AppCompatActivity {
                     RecyclerView hotelList = findViewById(R.id.hotelList);
                     hotelList.setHasFixedSize(true);
                     hotelList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
-                    HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(LocationDetailsActivity.this, location.getHotels(), R.layout.list_item, R.id.textView);
+                    HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(LocationDetailsActivity.this, location.getHotels(), R.layout.list_item);
                     hotelList.setAdapter(cityHotelListAdapter);
+
+                    RecyclerView imageList = findViewById(R.id.imageList);
+                    imageList.setHasFixedSize(true);
+                    imageList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
+                    ImageUrlAdapter imageListAdapter = new ImageUrlAdapter(LocationDetailsActivity.this, location.getImages(), R.layout.image_item);
+                    imageList.setAdapter(imageListAdapter);
 
                     progressDialog.dismiss();
                 }
             });
 
+            populateReviews();
+    }
 
+    public void populateReviews() {
         db.document(getIntent().getStringExtra("documentPath")).collection("reviews").get()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
@@ -207,10 +215,9 @@ public class LocationDetailsActivity extends AppCompatActivity {
                     RecyclerView cityCommentList = findViewById(R.id.commentList);
                     cityCommentList.setHasFixedSize(true);
                     cityCommentList.setLayoutManager(new LinearLayoutManager(LocationDetailsActivity.this));
-                    ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, snap.getDocuments(), R.layout.each_comment, R.id.textView);
+                    ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(LocationDetailsActivity.this, snap.getDocuments(), R.layout.each_comment);
                     cityCommentList.setAdapter(reviewSnapshotAdapter);
                 }
             });
     }
-
 }

@@ -18,7 +18,7 @@
             android:layout_height="0dp"
             android:elevation="10dp"
             android:scaleType="centerCrop"
-            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintBottom_toBottomOf="@+id/city"
@@ -41,7 +41,7 @@
             app:layout_constraintVertical_bias="0.005" />
 
         <TextView
-            android:id="@+id/province"
+            android:id="@+id/subTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="#Province"
@@ -63,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/province"
+            app:layout_constraintTop_toBottomOf="@+id/subTextView"
             app:layout_constraintVertical_bias="0.02"
             app:layout_constraintHorizontal_bias="0.06"/>
 
@@ -77,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/cityMap"
             app:layout_constraintTop_toBottomOf="@+id/cityMap"
-            app:layout_constraintVertical_bias="0.01" />
+            app:layout_constraintVertical_bias="0.012" />
 
         <TextView
             android:id="@+id/placeAltitude"
@@ -186,7 +186,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintHeight_percent="0.18"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/weather"
             app:layout_constraintTop_toBottomOf="@+id/weather"
@@ -213,7 +213,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintHeight_percent="0.06"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/visitPlaces"
             app:layout_constraintTop_toBottomOf="@+id/visitPlaces"
@@ -245,7 +245,7 @@
             app:layout_constraintTop_toBottomOf="@+id/activityList"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintHeight_percent="0.08"/>
+            app:layout_constraintHeight_percent="0.06"/>
 
         <TextView
             android:id="@+id/hotelList"
@@ -272,7 +272,7 @@
             app:layout_constraintTop_toBottomOf="@+id/hotelList"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintHeight_percent="0.08"/>
+            app:layout_constraintHeight_percent="0.06"/>
 
 
         <TextView
@@ -289,7 +289,7 @@
             app:layout_constraintVertical_bias="0.04" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cityCommentList"
+            android:id="@+id/commentList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/reviews"
@@ -298,7 +298,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.05"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.08"
             app:layout_constraintWidth_percent="0.9"/>
 
         <TextView
@@ -311,7 +311,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityCommentList"
+            app:layout_constraintTop_toBottomOf="@+id/commentList"
             app:layout_constraintVertical_bias="0.2" />
 
         <RatingBar
@@ -366,9 +366,6 @@
             app:layout_constraintTop_toBottomOf="@+id/cityRating"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="10dp"/>
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -26,17 +26,19 @@
             android:textStyle="bold"
             android:textSize="18sp"/>
         <TextView
-            android:id="@+id/province"
+            android:id="@+id/subTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#time"
-            android:textSize="14sp"/>
+            android:visibility="invisible"
+            android:textSize="0sp"/>
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#comment"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/rate"

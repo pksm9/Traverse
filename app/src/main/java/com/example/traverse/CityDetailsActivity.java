@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +76,7 @@ public class CityDetailsActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         txtCity = findViewById(R.id.city);
-        txtProvince = findViewById(R.id.province);
+        txtProvince = findViewById(R.id.subTextView);
         cityImage = findViewById(R.id.cityImage);
         placeMap = findViewById(R.id.cityMap);
 
@@ -210,6 +211,7 @@ public class CityDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String comment = cityComment.getText().toString();
                 float rating = ratingBar.getRating();
+                String time = String.valueOf(FieldValue.serverTimestamp());
 
                 db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -227,7 +229,7 @@ public class CityDetailsActivity extends AppCompatActivity {
                                             commentsMap.put("user", user);
                                             commentsMap.put("comment", comment);
                                             commentsMap.put("rating", rating);
-                                            commentsMap.put("time", FieldValue.serverTimestamp());
+                                            commentsMap.put("time", time);
                                             db.document(getIntent().getStringExtra("documentPath")).collection("reviews").document(uid).set(commentsMap)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
@@ -274,32 +276,46 @@ public class CityDetailsActivity extends AppCompatActivity {
                         RecyclerView visitPlaces = findViewById(R.id.locationList);
                         visitPlaces.setHasFixedSize(true);
                         visitPlaces.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(CityDetailsActivity.this, city.getLocations(), R.layout.list_item, R.id.textView);
+                        LocationReferenceAdapter visitPlacesAdapter = new LocationReferenceAdapter(CityDetailsActivity.this, city.getLocations(), R.layout.list_item);
                         visitPlaces.setAdapter(visitPlacesAdapter);
 
                         RecyclerView cityActivityList = findViewById(R.id.cityActivityList);
                         cityActivityList.setHasFixedSize(true);
                         cityActivityList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        ActivityReferenceAdapter cityActivityListAdapter = new ActivityReferenceAdapter(CityDetailsActivity.this, city.getActivities(), R.layout.list_item, R.id.textView);
+                        ActivityReferenceAdapter cityActivityListAdapter = new ActivityReferenceAdapter(CityDetailsActivity.this, city.getActivities(), R.layout.list_item);
                         cityActivityList.setAdapter(cityActivityListAdapter);
 
                         RecyclerView cityHotelList = findViewById(R.id.cityHotelList);
                         cityHotelList.setHasFixedSize(true);
                         cityHotelList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(CityDetailsActivity.this, city.getHotels(), R.layout.list_item, R.id.textView);
+                        HotelReferenceAdapter cityHotelListAdapter = new HotelReferenceAdapter(CityDetailsActivity.this, city.getHotels(), R.layout.list_item);
                         cityHotelList.setAdapter(cityHotelListAdapter);
 
-                       RecyclerView cityCommentList = findViewById(R.id.cityCommentList);
-                       cityCommentList.setHasFixedSize(true);
-                       cityCommentList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
-                       //ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(CityDetailsActivity.this, city.getReviews(), R.layout.each_comment, R.id.textView);
-                       //cityCommentList.setAdapter(reviewSnapshotAdapter);
+                        RecyclerView imageList = findViewById(R.id.imageList);
+                        imageList.setHasFixedSize(true);
+                        imageList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
+                        ImageUrlAdapter imageListAdapter = new ImageUrlAdapter(CityDetailsActivity.this, city.getImages(), R.layout.image_item);
+                        imageList.setAdapter(imageListAdapter);
 
                         progressDialog.dismiss();
                     }
                 });
 
+        populateReviews();
+    }
 
+    public void populateReviews() {
+        db.document(getIntent().getStringExtra("documentPath")).collection("reviews").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot snap) {
+                        RecyclerView cityCommentList = findViewById(R.id.commentList);
+                        cityCommentList.setHasFixedSize(true);
+                        cityCommentList.setLayoutManager(new LinearLayoutManager(CityDetailsActivity.this));
+                        ReviewSnapshotAdapter reviewSnapshotAdapter = new ReviewSnapshotAdapter(CityDetailsActivity.this, snap.getDocuments(), R.layout.each_comment);
+                        cityCommentList.setAdapter(reviewSnapshotAdapter);
+                    }
+                });
     }
 
 }

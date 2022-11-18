@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Traverse"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityDeatailsActivity"
+            android:name=".ActivityDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".HotelSearchActivity"
